@@ -7,7 +7,6 @@ Content-Type: application/json
 {
     "userName":"sugreev",
     "email":"sugreev@gmail.com",
-    "password":123455,
     "role":"Admin",
     "phoneNumber":8930485009
 }
@@ -18,7 +17,7 @@ Content-Type: application/json
 
 {
     "email":"sugreev@gmail.com",
-    "otp":480858
+    "otp":
 }
 
 ###
@@ -27,9 +26,9 @@ Content-Type: application/json
 
 {
     "email":"sugreev@gmail.com",
-    "password":"123455"
+    "password":
 }
 
 ###
 POST {{baseUrl}}/user/login/token
-Authorization: bearer eyJhbGciOiJIUzI1NiJ9.c3VncmVldkBnbWFpbC5jb20.fIcSSuyomh_syd5CMKI4zlQqmzQghNMgXaUvAqGBf48
+Authorization: bearer 
