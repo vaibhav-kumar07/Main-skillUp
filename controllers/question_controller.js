@@ -1,4 +1,14 @@
 const service = require("../services/question_services");
+
+
+exports.createQuestion = async (req, res) => {
+  console.log("question created here");
+  try {
+    const { Title, Options, Answer, Type } = req.body;
+    const { _id } = req.query;
+    await service.createQuestion(_id, Title, Options, Answer, Type);
+    res.status(200).send({ msg: "question Added in question bank" });
+
 // const question = require("../models/questionBank_schema");
 
 //1.get question
@@ -7,11 +17,13 @@ const getQuestion = async (req, res) => {
   try {
     let all = await service.getQuestion();
     res.status(200).send(all);
+
   } catch (error) {
     console.log("error during question Creation :", error);
     res.status(400).send({ message: error.message });
   }
 };
+
 
 const deleteQuestion = async (req, res) => {
   try {
