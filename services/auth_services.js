@@ -3,6 +3,7 @@ const client = require("twilio")(
   process.env.AUTH_KEY
 );
 const User = require("../models/user_schema");
+// const auth_helper=require("../services/helper_services")
 
 ///create user
 const createNewUser = async function (
@@ -23,6 +24,18 @@ const createNewUser = async function (
   }
 };
 
+const generateOtp = async function (email, Phone) {
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  await User.updateOne({ email }, { otp }, { upsert: true });
+  const message = await client.messages.create({
+    body: ` ${otp}`,
+    from: process.env.PHONE_NUMBER,
+    to: `+91${Phone}`,
+  });
+  return message;
+};
+
 module.exports = {
   createNewUser,
+  generateOtp,
 };
