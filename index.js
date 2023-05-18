@@ -1,18 +1,23 @@
 const express = require("express");
-const cors = require("cors");
+
 require("dotenv").config();
 const dbUtils = require("./utils/dbutils");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.use(express.json());
-app.use(cors());
-dbUtils.initDB();
-const error_controller = require("./controllers/error_controller");
-const auth_router = require("./routes/auth_routes");
-const solver_router = require("./routes/solver_routes");
 
+dbUtils.initDB();
+// app.use(cors());
+
+const error_controller = require("./controllers/error_controller");
+const question_router = require("./routes/question_routes");
+const auth_router = require("./routes/auth_routes");
+
+const test_router = require("./routes/test_route");
+app.use("/test", test_router);
 app.use("/user", auth_router);
-app.use("/solvers", solver_router);
+app.use("/question", question_router);
+
 app.use(error_controller.handleErrors);
 
 process.on("SIGINT", () => {
