@@ -1,4 +1,5 @@
 const auth_service = require("../services/auth_services");
+const auth_helper = require("../services/helper_services");
 
 exports.createUser = async function (req, res) {
   try {
@@ -11,7 +12,11 @@ exports.createUser = async function (req, res) {
       role,
       phoneNumber,
     });
-    res.status(201).send({ message: "successfully created a new User", id });
+    await auth_service.generateOtp(email, phoneNumber);
+    res.status(201).send({
+      message: "successfully send otp on moblie !! Please verify your identity",
+      id,
+    });
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
@@ -44,5 +49,58 @@ exports.verifyToken = async (req, res, next) => {
     next();
   } catch (error) {
     handleErrors(error, next);
+  }
+};
+
+exports.userLogin = async function (req, res) {
+  try {
+    const { email, password } = req.body;
+    const user = await auth_helper.getUserByEmail(email);
+    if (!user) throw new Error("User does not exist");
+    console.log(password, user.password);
+    await auth_helper.verifyPassword(password, user.password);
+    const Token = await auth_helper.generateToken(email);
+    // await auth_helper.updateToken()
+    await auth_helper.updateToken(user.email, Token);
+    if (!user.isActive) {
+      return res
+        .status(200)
+        .send({ msg: "You are Inactive !!! please Verify your Account" });
+    }
+    return res
+      .status(200)
+      .send({ message: "User logged in successfully", Token });
+  } catch (err) {
+    return res.status(400).send({ message: err.message });
+  }
+};
+
+exports.verifyUserByOtp = async function (req, res) {
+  try {
+    const { email, otp } = req.body;
+    const user = await auth_helper.getUserByEmail(email);
+    // if((user.isActive))
+    // if(user)
+    await auth_helper.verifyOtp(email, otp);
+    await auth_helper.makeUserActive(email);
+    const token = await auth_helper.generateToken(email);
+    const updatTokenToDb = await auth_helper.updateToken(email, token);
+    return res.status(200).send({
+      message:
+        "your account has been Activated succesfully and Signed in Successfully",
+      token,
+    });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
+};
+
+exports.UserloginViaToken = async function (req, res) {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    await auth_helper.verifyToken(token);
+    return res.status(200).send({ message: "User Logged in Successfully" });
+  } catch (err) {
+    return res.status(400).send({ message: err.message });
   }
 };

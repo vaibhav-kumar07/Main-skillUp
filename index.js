@@ -1,15 +1,17 @@
 const express = require("express");
-// const cors = require("cors");
+
 require("dotenv").config();
 const dbUtils = require("./utils/dbutils");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.use(express.json());
-// app.use(cors());
+
 dbUtils.initDB();
+// app.use(cors());
+
 const error_controller = require("./controllers/error_controller");
 
-const quesRoute = require("./routes/question_routes");
+const question_router = require("./routes/question_routes");
 
 const auth_router = require("./routes/auth_routes");
 
@@ -19,9 +21,13 @@ app.use("/test", test_router);
 
 app.use("/user", auth_router);
 
-app.use("/api", quesRoute);
+app.use("/api", question_router);
 
 app.use(error_controller.handleErrors);
+
+
+app.use("/question", questionRouter);
+
 process.on("SIGINT", () => {
   dbUtils.disconnectDB();
   console.log("Closing server");
