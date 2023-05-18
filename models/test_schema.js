@@ -36,4 +36,16 @@ const testSchema = new mongoose.Schema({
   },
 });
 
+// Populate the full question details when querying for a test
+testSchema.pre("findOne", function (next) {
+  this.populate("questions.question");
+  next();
+});
+
+// Populate the full question details when querying for multiple tests
+testSchema.pre("find", function (next) {
+  this.populate("questions.question");
+  next();
+});
+
 module.exports = mongoose.model("Test", testSchema);
