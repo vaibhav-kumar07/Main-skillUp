@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
   },
   otp: {
     type: String,
-    expires: "5m",
+    expires: 10,
   },
   phoneNumber: {
     type: Number,
