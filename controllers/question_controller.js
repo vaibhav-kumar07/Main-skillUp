@@ -11,7 +11,6 @@ const createQuestion = async (req, res) => {
     throw { message: `error in creating question :- ${error.message}` };
   }
 };
-// const question = require("../models/questionBank_schema");
 
 //1.get question
 const getAllQuestions = async (req, res) => {
@@ -50,7 +49,6 @@ const UpdateQuestion = async (req, res) => {
     });
     res.status(200).send(question);
   } catch (error) {
-    // console.error(error);
     res.status(400).send({ message: error.message });
   }
 };
