@@ -10,7 +10,7 @@ const user_service = require("../services/user_services");
 //if user is inactive ,change status
 const makeUserActive = async function (email) {
   console.log("In auth service");
-  const user = await userService.getUserByEmail(email);
+  const user = await getUserByEmail(email);
   let result = await User.findOneAndUpdate(
     { email: user.email },
     { isActive: true }
@@ -18,11 +18,22 @@ const makeUserActive = async function (email) {
   return result;
 };
 
+const getUserByEmail = async function (email) {
+  try {
+    const emailid = email;
+    let result = await User.findOne({ email: emailid });
+    if (!result) throw new Error("Invalid Email!!!!!!!");
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 //verify token
 const verifyToken = async function (token) {
   console.log("In auth service");
   const getEmailByToken = await User.findOne({ token });
-  if (!getEmailByToken) throw new Error("access denied");
+  if (!getEmailByToken) throw new Error("access denied !! Invalid Token");
   const result = await jwt.verify(token, process.env.SECRETKEY);
   if (result !== getEmailByToken.email) throw new Error("Invalid token");
   return result;
@@ -30,15 +41,18 @@ const verifyToken = async function (token) {
 
 //verify otp
 const verifyOtp = async function (email, OTP) {
-  const user = await user_service.getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!(user.otp == OTP)) throw new Error("invalid otp");
   return user;
 };
 
 //update token
-const updateToken = async function (id, Token) {
+const updateToken = async function (email1, Token) {
   console.log("In auth service");
-  let result = await User.findOneAndUpdate({ _id: id }, { token: Token });
+  // const email1 = email;
+  console.log(email1, Token);
+  let result = await User.findOneAndUpdate({ email: email1 }, { token: Token });
+  // console.log(result);
   return result;
 };
 
@@ -47,7 +61,8 @@ const generateToken = async function (email) {
   try {
     console.log("In auth service");
     const secretkety = process.env.SECRETKEY;
-    const token = jwt.sign(email, secretkety);
+    const token = await jwt.sign(email, secretkety);
+    // const updateTokenToDb = await updateToken(email, token);
     return token;
   } catch (err) {
     throw err;
@@ -56,7 +71,6 @@ const generateToken = async function (email) {
 
 //verify password
 const verifyPassword = async function (password, userPassword) {
-  console.log("In auth service");
   const checkPassword = await bcrypt.compare(password, userPassword);
   if (!checkPassword) throw new Error("Invalid credentials");
   return checkPassword;
@@ -69,4 +83,5 @@ module.exports = {
   verifyPassword,
   verifyToken,
   makeUserActive,
+  getUserByEmail,
 };
