@@ -21,10 +21,9 @@ app.use("/test", test_router);
 
 app.use("/user", auth_router);
 
-app.use("/api", question_router);
+app.use("/question", question_router);
 
 app.use(error_controller.handleErrors);
-
 
 app.use("/question", questionRouter);
 
