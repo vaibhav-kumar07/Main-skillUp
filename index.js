@@ -8,11 +8,13 @@ app.use(express.json());
 app.use(cors());
 dbUtils.initDB();
 const error_controller = require("./controllers/error_controller");
-
 const auth_router = require("./routes/auth_routes");
+const solver_router = require("./routes/solver_routes");
 
 app.use("/user", auth_router);
+app.use("/solvers", solver_router);
 app.use(error_controller.handleErrors);
+
 process.on("SIGINT", () => {
   dbUtils.disconnectDB();
   console.log("Closing server");
