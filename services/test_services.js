@@ -1,8 +1,21 @@
 const Test = require("../models/test_schema");
 
-const createTest = async (name, createdBy, questions, solvers) => {
+// const createTest = async (name, createdBy, questions, solvers) => {
+//   try {
+//     const test = new Test({ name, createdBy, questions, solvers });
+//     await test.save();
+//     return test;
+//   } catch (error) {
+//     throw new Error("Failed to create test: " + error.message);
+//   }
+// };
+const createTest = async (name, createdBy, questions) => {
   try {
-    const test = new Test({ name, createdBy, questions, solvers });
+    const test = new Test({
+      name,
+      createdBy,
+      questions: questions.map((question) => ({ question })),
+    });
     await test.save();
     return test;
   } catch (error) {
@@ -29,13 +42,13 @@ const getTestByID = async (_id) => {
   }
 };
 
-const delTestByID = async (_id) => {
+const delTestByID = async (id) => {
   try {
-    const find = Test.findById(_id);
+    const find = await Test.findById(id);
     if (!find) {
       throw new Error("no test found to delete in database ");
     }
-    const test = Test.deleteOne(_id);
+    const test = await Test.deleteOne({ _id: find._id });
     return test;
   } catch (error) {
     throw new Error("Failed to create test: " + error.message);
