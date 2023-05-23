@@ -12,9 +12,9 @@ const createTest = async (req, res) => {
   }
 };
 
-const getAllTest = async (req, res) => {
+const getAllTests = async (req, res) => {
   try {
-    await test_service.getAllTest();
+    await test_service.getAllTests();
     res.status(201).json(test);
   } catch (error) {
     res.status(500).json(error.message);
@@ -53,7 +53,7 @@ const modTestByID = async (req, res) => {
 
 module.exports = {
   createTest,
-  getAllTest,
+  getAllTests,
   getTestByID,
   delTestByID,
   modTestByID,

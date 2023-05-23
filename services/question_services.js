@@ -93,12 +93,9 @@ module.exports.getAllQuestion = async () => {
   );
 };
 
-exports.updateQuestion = async (
-  questionId,
-  { Title, Answer, userId, questionid }
-) => {
+exports.updateQuestion = async (questionId, { Title, Answer, userId }) => {
   try {
-    const question = await Question.findById(questionid);
+    const question = await Question.findById(questionId);
     console.log(userId, question.user);
     if (!(question.user == userId))
       throw new Error("invalid user to update a question");

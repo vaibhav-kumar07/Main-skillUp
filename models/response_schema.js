@@ -5,6 +5,13 @@ const responseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
+    validate: {
+      validator: async function (userId) {
+        const user = await mongoose.model("User").findById(userId);
+        return user && user.role === "Solver";
+      },
+      message: 'User must have the role of "Solver".',
+    },
   },
   test: {
     type: mongoose.Schema.Types.ObjectId,

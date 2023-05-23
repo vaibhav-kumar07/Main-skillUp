@@ -23,7 +23,7 @@ const createTest = async (name, createdBy, questions) => {
   }
 };
 
-const getAllTest = async () => {
+const getAllTests = async () => {
   try {
     const test = Test.find();
     return test;
@@ -74,7 +74,7 @@ const modTestByID = async (_id) => {
 
 module.exports = {
   createTest,
-  getAllTest,
+  getAllTests,
   getTestByID,
   delTestByID,
   modTestByID,

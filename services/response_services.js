@@ -12,9 +12,7 @@ exports.addResponseToTest = async (userId, testId, questionResponses) => {
         selectedAnswer: selectedAnswer,
       });
     }
-
     console.log(responses);
-
     // Create a new response document
     const response = new Response({
       user: userId,

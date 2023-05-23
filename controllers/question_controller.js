@@ -45,12 +45,13 @@ const UpdateQuestion = async (req, res) => {
     const questionid = req.params.quesId;
     const userId = req.params.userId;
     const { Title, Answer } = req.body;
-    const question = await service.updateQuestion(
-      questionid,
+    console.log(Title, userId, Answer);
+    console.log("before service");
+    const question = await service.updateQuestion(questionid, {
       Title,
       Answer,
-      userId
-    );
+      userId,
+    });
     res.status(200).send(question);
   } catch (error) {
     res.status(400).send({ message: error.message });

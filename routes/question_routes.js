@@ -9,7 +9,7 @@ const {
 
 router.use(express.json());
 router.route("/createQuestion/:id").post(createQuestion);
-router.route("/getAllQuestion").get(getAllQuestions);
+router.route("/getAllQuestions").get(getAllQuestions);
 router.route("/updateQuestion/:quesId/:userId").put(UpdateQuestion);
 router.route("/deleteQuestion/:quesId/:userId").delete(deleteQuestion);
 
