@@ -36,6 +36,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
     trim: true,
+    unique: true,
     min: 1000000000,
     max: 9999999999,
   },
@@ -55,5 +56,13 @@ UserSchema.pre("save", async function (next) {
     next(error);
   }
 });
+
+// UserSchema.pre("save", async function (next) {
+//   try {
+
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 module.exports = mongoose.model("User", UserSchema);

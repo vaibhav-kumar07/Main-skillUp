@@ -12,9 +12,8 @@ exports.createUser = async function (req, res) {
       role,
       phoneNumber,
     });
-    await auth_service.generateOtp(email, phoneNumber);
     res.status(201).send({
-      message: "successfully send otp on moblie !! Please verify your identity",
+      message: "Please verify your email or phone!!!!!",
       id,
     });
   } catch (error) {
@@ -29,6 +28,26 @@ exports.logout = async (req, res, next) => {
     res.status(200).send({ message: "Logged out successfully" });
   } catch (error) {
     handleErrors(error, next);
+  }
+};
+
+exports.generateOtpViaEmail = async function (req, res) {
+  try {
+    const { email } = req.body;
+    await auth_service.generateOtpOnEmail(email);
+    res.status(200).send({ message: "successfully sent otp on mail" });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+exports.generateOtpViaPhone = async function (req, res) {
+  try {
+    const { phone } = req.body;
+    await auth_service.generateOtpOnMobile(`${phone}`);
+    res.status(200).send({ message: "successfully sent otp on mobile " });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
   }
 };
 
@@ -57,39 +76,62 @@ exports.userLogin = async function (req, res) {
     const { email, password } = req.body;
     const user = await auth_helper.getUserByEmail(email);
     if (!user) throw new Error("User does not exist");
-    console.log(password, user.password);
-    await auth_helper.verifyPassword(password, user.password);
+    await auth_helper.verifyPassword(`${password}`, user.password);
     const Token = await auth_helper.generateToken(email);
-    // await auth_helper.updateToken()
     await auth_helper.updateToken(user.email, Token);
     if (!user.isActive) {
-      res
-        .status(200)
-        .send({ msg: "You are Inactive !!! please Verify your Account" });
+      return res.status(200).send({
+        msg: "You are Inactive !!! please Verify your Account using email or phone through otp",
+      });
     }
-    res.status(200).send({ message: "User logged in successfully", Token });
+    return res
+      .status(200)
+      .send({ message: "User logged in successfully", Token });
   } catch (err) {
     res.status(400).send({ message: err.message });
   }
 };
 
-exports.verifyUserByOtp = async function (req, res) {
+exports.verifyUserOtpByMail = async function (req, res) {
   try {
     const { email, otp } = req.body;
     const user = await auth_helper.getUserByEmail(email);
-    // if((user.isActive))
-    // if(user)
+    if (user.isActive) {
+      return res.status(200).send({
+        message:
+          "already active no need to verify!! Login via email and password",
+      });
+    }
     await auth_helper.verifyOtp(email, otp);
     await auth_helper.makeUserActive(email);
-    const token = await auth_helper.generateToken(email);
-    const updatTokenToDb = await auth_helper.updateToken(email, token);
     return res.status(200).send({
       message:
-        "your account has been Activated succesfully and Signed in Successfully",
-      token,
+        "your account has been Activated succesfully please login with your credentials to get your token",
     });
   } catch (err) {
     res.status(400).send({ message: err.message });
+  }
+};
+
+exports.verifyUserOtpByPhone = async function (req, res) {
+  try {
+    const { phone, otp } = req.body;
+    const user = await auth_helper.getUserByPhone(phone);
+    if (user.isActive) {
+      return res.status(200).send({
+        message:
+          "already active no need to verify!! Login via email and password",
+      });
+    }
+    const email = user.email;
+    await auth_helper.verifyOtp(email, otp);
+    await auth_helper.makeUserActive(email);
+    res.status(200).send({
+      message:
+        "your account has been successfully activated  please login with your credentials to get token",
+    });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
   }
 };
 

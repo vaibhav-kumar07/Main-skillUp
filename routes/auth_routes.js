@@ -4,14 +4,19 @@ const {
   createUser,
   verifyToken,
   logout,
-  verifyUserByOtp,
   UserloginViaToken,
   userLogin,
+  generateOtpViaEmail,
+  generateOtpViaPhone,
+  verifyUserOtpByMail,
+  verifyUserOtpByPhone,
 } = require("../controllers/auth_controller");
-// const { generateOtp } = require("../services/auth_services");
 
 router.route("/signup").post(createUser);
-router.route("/signup/verify").post(verifyUserByOtp);
+router.route("/email/generate-Otp").post(generateOtpViaEmail);
+router.route("/phone/generate-otp").post(generateOtpViaPhone);
+router.route("/email/verify-otp").post(verifyUserOtpByMail);
+router.route("/phone/verify-otp").post(verifyUserOtpByPhone);
 router.route("/login").post(userLogin);
 router.route("/login/token").post(UserloginViaToken);
 router.route("/logout").post(verifyToken, logout);
