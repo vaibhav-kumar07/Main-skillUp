@@ -26,7 +26,6 @@ const testSchema = new mongoose.Schema({
       solver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Solver",
-        required: true,
       },
     },
   ],
@@ -49,3 +48,4 @@ testSchema.pre("find", function (next) {
 });
 
 module.exports = mongoose.model("Test", testSchema);
+// module.exports = mongoose.model("AttempTest", testAttemptSchema);
