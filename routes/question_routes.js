@@ -1,17 +1,15 @@
 const express = require("express");
-
 const router = express.Router();
-const { createQuestion } = require("../controllers/question_controller");
-router.use(express.json());
-router.route("/createQuestion").post(createQuestion);
 const {
-  getQuestion,
+  createQuestion,
+  getAllQuestions,
   deleteQuestion,
   UpdateQuestion,
 } = require("../controllers/question_controller");
 
 router.use(express.json());
-router.route("/getQuestion").get(getQuestion);
+router.route("/createQuestion/:id").post(createQuestion);
+router.route("/getAllQuestions").get(getAllQuestions);
 router.route("/updateQuestion/:quesId/:userId").put(UpdateQuestion);
 router.route("/deleteQuestion/:quesId/:userId").delete(deleteQuestion);
 

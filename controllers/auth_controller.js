@@ -63,15 +63,13 @@ exports.userLogin = async function (req, res) {
     // await auth_helper.updateToken()
     await auth_helper.updateToken(user.email, Token);
     if (!user.isActive) {
-      return res
+      res
         .status(200)
         .send({ msg: "You are Inactive !!! please Verify your Account" });
     }
-    return res
-      .status(200)
-      .send({ message: "User logged in successfully", Token });
+    res.status(200).send({ message: "User logged in successfully", Token });
   } catch (err) {
-    return res.status(400).send({ message: err.message });
+    res.status(400).send({ message: err.message });
   }
 };
 
