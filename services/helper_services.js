@@ -18,6 +18,17 @@ const makeUserActive = async function (email) {
   return result;
 };
 
+const getUserByPhone = async function (phone) {
+  try {
+    let result = await User.findOne({ phoneNumber: phone });
+    // console.log(result, 1111);
+    if (!result) throw new Error("Invalid phone!!!!!!!");
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getUserByEmail = async function (email) {
   try {
     const emailid = email;
@@ -41,16 +52,19 @@ const verifyToken = async function (token) {
 
 //verify otp
 const verifyOtp = async function (email, OTP) {
-  const user = await getUserByEmail(email);
-  if (!(user.otp == OTP)) throw new Error("invalid otp");
-  return user;
+  try {
+    const user = await getUserByEmail(email);
+    if (!(user.otp == OTP)) throw new Error("invalid otp");
+    // console.log(OTP == user.otp);
+    return user;
+  } catch (err) {
+    throw err;
+  }
 };
 
 //update token
 const updateToken = async function (email1, Token) {
   console.log("In auth service");
-  // const email1 = email;
-  console.log(email1, Token);
   let result = await User.findOneAndUpdate({ email: email1 }, { token: Token });
   // console.log(result);
   return result;
@@ -59,10 +73,8 @@ const updateToken = async function (email1, Token) {
 //generate token
 const generateToken = async function (email) {
   try {
-    console.log("In auth service");
     const secretkety = process.env.SECRETKEY;
     const token = await jwt.sign(email, secretkety);
-    // const updateTokenToDb = await updateToken(email, token);
     return token;
   } catch (err) {
     throw err;
@@ -84,4 +96,5 @@ module.exports = {
   verifyToken,
   makeUserActive,
   getUserByEmail,
+  getUserByPhone,
 };

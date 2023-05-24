@@ -1,0 +1,68 @@
+@baseUrl=http://localhost:3500
+
+
+## user signup ##
+###
+POST {{baseUrl}}/user/signup
+Content-Type: application/json
+
+{
+    "userName":"vaibhav",
+    "email":"vaibhavtezan@gmail.com",
+    "password":12121,
+    "role":"Admin",
+    "phoneNumber":8930485009
+}
+
+## otp sent on mail ##
+###
+POST {{baseUrl}}/user/email/generate-Otp
+Content-Type: application/json
+
+{
+   "email":"ksugreev88@gmail.com"
+}
+
+## otp sent on mobile ##
+###
+POST {{baseUrl}}/user/phone/generate-Otp
+Content-Type: application/json
+
+{
+   "phone":8930485009
+}
+
+## verifying otp using email ##
+###
+POST {{baseUrl}}/user/email/verify-otp
+Content-Type: application/json
+
+{
+    "email":"ksugreev88@gmail.com",
+    "otp":483937
+}
+
+## verifying otp using mobile ##
+###
+POST {{baseUrl}}/user/phone/verify-otp
+Content-Type: application/json
+
+{
+    "phone":8826891859,
+    "otp":124825
+}
+
+## login through credentials ##
+###
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+    "email":"ksugreev88@gmail.com",
+    "password":12121
+}
+
+## login through token ##
+###
+POST {{baseUrl}}/user/login/token
+Authorization: bearer eyJhbGciOiJUzI1NiJ9.a3N1Z3JlZXY4OEBnbWFpbC5jb20.wvqAPcAHnbbROqDMS7CBLS5jYXkpjrqAZPGK2QRJo68
