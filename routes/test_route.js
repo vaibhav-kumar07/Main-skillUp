@@ -8,10 +8,10 @@ const {
   modTestByID,
 } = require("../controllers/test_controller");
 
-router.route("/create/test").post(createTest);
+router.route("/create/test/:id").post(createTest);
 router.route("/getAll").get(getAllTest);
 router.route("/get/:id").get(getTestByID);
 router.route("/delete/:id").delete(delTestByID);
-router.route("/delete/:id").put(modTestByID);
+router.route("/modify/:id").patch(modTestByID);
 
 module.exports = router;

@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test API",
+    "description": "API documentation for the test routes"
+  },
+  "basePath": "/api",
+  "definitions": {
+    "Test": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for the test."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the test."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "The ID of the user who created the test."
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Question"
+          },
+          "description": "The array of questions associated with the test."
+        },
+        "solvers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Solver"
+          },
+          "description": "The array of solvers associated with the test."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the test was created."
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for the question."
+        }
+      }
+    },
+    "Solver": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for the solver."
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for the user."
+        }
+      }
+    }
+  },
+  "paths": {
+    "/create/test/": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Create a new test",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test created successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/getAll": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get all tests",
+        "responses": {
+          "201": {
+            "description": "List of all tests"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/get/{id}": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test details"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/delete/{id}": {
+      "delete": {
+        "tags": ["Test"],
+        "summary": "Delete a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test deleted successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/modify/{id}": {
+      "patch": {
+        "tags": ["Test"],
+        "summary": "Modify a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test modified successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

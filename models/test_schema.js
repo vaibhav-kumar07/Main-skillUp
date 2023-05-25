@@ -26,7 +26,6 @@ const testSchema = new mongoose.Schema({
       solver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Solver",
-        required: true,
       },
     },
   ],

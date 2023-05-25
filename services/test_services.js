@@ -19,9 +19,9 @@ const getAllTest = async () => {
   }
 };
 
-const getTestByID = async (_id) => {
+const getTestByID = async (id) => {
   try {
-    const test = Test.findById(_id);
+    const test = Test.findById(id);
     if (!test) throw new Error(`no such id found`);
     return test;
   } catch (error) {
@@ -29,13 +29,13 @@ const getTestByID = async (_id) => {
   }
 };
 
-const delTestByID = async (_id) => {
+const delTestByID = async (id) => {
   try {
-    const find = Test.findById(_id);
+    const find = await Test.findById(id);
     if (!find) {
       throw new Error("no test found to delete in database ");
     }
-    const test = Test.deleteOne(_id);
+    const test = await Test.deleteOne({ _id: find._id });
     return test;
   } catch (error) {
     throw new Error("Failed to create test: " + error.message);
@@ -44,15 +44,19 @@ const delTestByID = async (_id) => {
 
 const modTestByID = async (_id) => {
   try {
-    const find = Test.findById(_id);
+    const find = await Test.findById(_id);
+    console.log(find);
     if (!find) {
-      throw new Error("no test found to delete in database ");
+      throw new Error("no test found to modify in database ");
     }
-    const test = Test.Test.findByIdAndUpdate(
+    const test = await Test.findByIdAndUpdate(
       _id,
       { $set: { questions: questions } },
       { new: true }
     );
+    if (!test) {
+      throw new Error("No test found in the database");
+    }
     return test;
   } catch (error) {
     throw new Error("Failed to create test: " + error.message);
