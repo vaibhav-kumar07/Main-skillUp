@@ -1,0 +1,146 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Question API",
+    "description": "API endpoints for managing questions"
+  },
+
+  "servers": [{ "url": "http://localhost:3005" }],
+  "schemes": ["http", "https"],
+
+  "paths": {
+    "/question/getQuestion": {
+      "get": {
+        "summary": "Get a question",
+        "operationId": "getQuestion",
+        "tags": ["Question"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Question not found"
+          }
+        }
+      }
+    },
+    "/question/updateQuestion/{quesId}/{userId}": {
+      "put": {
+        "summary": "Update a question",
+        "operationId": "updateQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updateData",
+            "in": "body",
+            "description": "Updated question data",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Question"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question updated successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/question/deleteQuestion/{quesId}/{userId}": {
+      "delete": {
+        "summary": "Delete a question",
+        "operationId": "deleteQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question deleted successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Question": {
+        "type": "object",
+        "properties": {
+          "Title": {
+            "type": "string"
+          },
+          "Options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Answer": {
+            "type": "string"
+          },
+          "Type": {
+            "type": "string",
+            "enum": ["easy", "medium", "hard"]
+          }
+        }
+      }
+    }
+  }
+}
