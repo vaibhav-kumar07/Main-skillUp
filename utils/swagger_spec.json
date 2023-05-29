@@ -124,7 +124,7 @@
             "descrition": "Verify otp through Phone Number to activate your Account ",
             "required": "true",
             "schema": {
-              "$ref": "#/definitions/generateAndVerifyOtpViaPhoneNumber"
+              "$ref": "#/definitions/GenerateAndVerifyOtpViaPhoneNumber"
             }
           }
         ],
@@ -184,6 +184,231 @@
           },
           "400": {
             "description": "Acess denied !! Invalid token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/question/getQuestion": {
+      "get": {
+        "summary": "Get a question",
+        "operationId": "getQuestion",
+        "tags": ["Question"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defintions/Question"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Question not found"
+          }
+        }
+      }
+    },
+    "/question/updateQuestion/{quesId}/{userId}": {
+      "put": {
+        "summary": "Update a question",
+        "operationId": "updateQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updateData",
+            "in": "body",
+            "description": "Updated question data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Question"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question updated successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/question/deleteQuestion/{quesId}/{userId}": {
+      "delete": {
+        "summary": "Delete a question",
+        "operationId": "deleteQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question deleted successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+
+    "/test/createTest": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Create a new test",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test created successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/getAllTests": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get all tests",
+        "responses": {
+          "201": {
+            "description": "List of all tests"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/getTest/": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test details"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/deleteTest/": {
+      "delete": {
+        "tags": ["Test"],
+        "summary": "Delete a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test deleted successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/modifyTest/": {
+      "patch": {
+        "tags": ["Test"],
+        "summary": "Modify a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test modified successfully"
           },
           "500": {
             "description": "Internal server error"
@@ -255,6 +480,53 @@
       "properties": {
         "token": {
           "type": "string"
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Answer": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"]
+        }
+      }
+    },
+
+    "Test": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the test."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "The ID of the user who created the test."
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Question"
+          },
+          "description": "The array of questions associated with the test."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the test was created."
         }
       }
     }

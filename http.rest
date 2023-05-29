@@ -1,4 +1,4 @@
-@baseUrl=http://localhost:3500
+@baseUrl=http://localhost:3005
 
 
 ## user signup ##
@@ -65,4 +65,10 @@ Content-Type: application/json
 ## login through token ##
 ###
 POST {{baseUrl}}/user/login/token
-Authorization: bearer eyJhbGciOiJUzI1NiJ9.a3N1Z3JlZXY4OEBnbWFpbC5jb20.wvqAPcAHnbbROqDMS7CBLS5jYXkpjrqAZPGK2QRJo68
+Authorization: bearer 
+
+
+
+###
+GET  {{baseUrl}}/test/getAllTests
+Content-Type:application/json

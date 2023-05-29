@@ -41,7 +41,7 @@ testSchema.pre("findOne", function (next) {
   next();
 });
 
-// Populate the full question details when querying for multiple tests
+// show the full question details when querying for multiple tests
 testSchema.pre("find", function (next) {
   this.populate("questions.question");
   next();
