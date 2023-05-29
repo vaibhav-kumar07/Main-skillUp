@@ -1,0 +1,534 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Skill API",
+    "description": "API endpoints for SkillUp",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3005"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "paths": {
+    "/user/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "parameters": [
+          {
+            "name": "User Inputs",
+            "in": "body",
+            "description": "User Details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User created successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/email/generate-Otp": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Send Otp to email to activate account",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "descrition": "sent otp to email",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/GenerateAndVerifyOtpViaEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OTP sent to email successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/phone/generate-otp": {
+      "post": {
+        "tags": ["Users"],
+        "in": "body",
+        "summary": "Send Otp to phoneNumber to activate Account",
+        "parameters": [
+          {
+            "name": "PhoneNumber",
+            "in": "body",
+            "descrition": "sent otp to Phone Number",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/generateAndVerifyOtpViaPhoneNumber"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "otp genrated successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/email/verify-otp": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Verify otp to activate your account ",
+        "parameters": [
+          {
+            "name": "email Verification",
+            "in": "body",
+            "descrition": "Verify otp through email to activate your Account ",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/GenerateAndVerifyOtpViaEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "otp verified successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/phone/verify-otp": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Verify otp to activate your account ",
+        "parameters": [
+          {
+            "name": "phone Number Verification",
+            "in": "body",
+            "descrition": "Verify otp through Phone Number to activate your Account ",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/GenerateAndVerifyOtpViaPhoneNumber"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "otp verified succesfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "login user with Email and password ",
+        "parameters": [
+          {
+            "name": "Login inputs",
+            "in": "body",
+            "description": "Login inputs ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "login successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/login/token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login user with token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorization sent to email successfully"
+          },
+          "400": {
+            "description": "Acess denied !! Invalid token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/question/getQuestion": {
+      "get": {
+        "summary": "Get a question",
+        "operationId": "getQuestion",
+        "tags": ["Question"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defintions/Question"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Question not found"
+          }
+        }
+      }
+    },
+    "/question/updateQuestion/{quesId}/{userId}": {
+      "put": {
+        "summary": "Update a question",
+        "operationId": "updateQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updateData",
+            "in": "body",
+            "description": "Updated question data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Question"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question updated successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/question/deleteQuestion/{quesId}/{userId}": {
+      "delete": {
+        "summary": "Delete a question",
+        "operationId": "deleteQuestion",
+        "tags": ["Question"],
+        "parameters": [
+          {
+            "name": "quesId",
+            "in": "path",
+            "description": "Question ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question deleted successfully"
+          },
+          "404": {
+            "description": "Question not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+
+    "/test/createTest": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Create a new test",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test created successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/getAllTests": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get all tests",
+        "responses": {
+          "201": {
+            "description": "List of all tests"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/getTest/": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test details"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/deleteTest/": {
+      "delete": {
+        "tags": ["Test"],
+        "summary": "Delete a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test deleted successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/test/modifyTest/": {
+      "patch": {
+        "tags": ["Test"],
+        "summary": "Modify a test by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Test ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated test data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Test modified successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserInput": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["Admin", "Solver"]
+        },
+        "phoneNumber": {
+          "type": "string"
+        }
+      },
+      "required": ["userName", "password", "role", "email", "phoneNumber"]
+    },
+    "GenerateAndVerifyOtpViaEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "otp": {
+          "type": "string"
+        }
+      },
+      "required": ["email"]
+    },
+    "GenerateAndVerifyOtpViaPhoneNumber": {
+      "type": "object",
+      "properties": {
+        "phoneNumber": {
+          "type": "string"
+        },
+        "otp": {
+          "type": "string"
+        }
+      },
+      "required": ["phoneNumber"]
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "TokenInput": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Answer": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"]
+        }
+      }
+    },
+
+    "Test": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the test."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "The ID of the user who created the test."
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Question"
+          },
+          "description": "The array of questions associated with the test."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the test was created."
+        }
+      }
+    }
+  }
+}
