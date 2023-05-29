@@ -25,9 +25,12 @@ const createTest = async (name, createdBy, questions) => {
 
 const getAllTests = async () => {
   try {
-    const test = Test.find();
+    console.log("in service test");
+    const test = await Test.find();
+    console.log(test);
     return test;
   } catch (error) {
+    console.log(error.message);
     throw new Error("Failed to create test: " + error.message);
   }
 };
